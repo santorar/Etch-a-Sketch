@@ -6,6 +6,15 @@ let random = false;
 // grid section
 let container = document.createElement("div");
 container.classList.add('container');
+//paint events
+const paint = (e) => {
+        if (random){
+            color = `#${(Math.floor(Math.random()*16777215)).toString(16)}`;
+        }
+        e.target.style.backgroundColor = `${color}`;
+
+}
+
 //create a row of the grid
 const create = () => {
     for(let i = 0; i < grid; i++){
@@ -51,15 +60,6 @@ configs.appendChild(document.createElement("br"));
 configs.appendChild(randomColorText);
 configs.appendChild(randomColorCheck);
 
-//paint events
-const paint = (e) => {
-        if (random){
-            color = `#${(Math.floor(Math.random()*16777215)).toString(16)}`;
-        }
-        e.target.style.backgroundColor = `${color}`;
-
-}
-
 let elements = document.querySelectorAll(".element-grid");
 elements.forEach(element => {
     element.addEventListener('mouseover', (e) => {
@@ -71,7 +71,6 @@ elements.forEach(element => {
 });
 document.body.addEventListener('mousedown', () => {pressed = true; console.log("pressed")});
 document.body.addEventListener('mouseup', () => {pressed = false;});
-
 //grid toggle
 let gridToggleText = document.createElement("span");
 let gridToggle = document.createElement("input");
@@ -111,6 +110,14 @@ gridSize.addEventListener('change', (e) =>{
     container.innerHTML = "";
     create();
     elements = document.querySelectorAll(".element-grid");
+    elements.forEach(element => {
+        element.addEventListener('mouseover', (e) => {
+            if (pressed){
+                paint(e)
+            }
+        });
+        element.addEventListener('mousedown', paint);
+    });
     toggleGrid();
 });
 
